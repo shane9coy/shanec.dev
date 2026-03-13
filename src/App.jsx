@@ -94,7 +94,7 @@ const AsciiHero = ({ isCompactNav = false }) => {
         </div>
         <h1 style={{ fontFamily: fontDisplay, fontSize: 'clamp(3.8rem, 8.2vw, 6.75rem)', fontWeight: 400, letterSpacing: '0.015em', lineHeight: 0.92, color: brand.gold, marginBottom: 18, textShadow: '0 20px 60px rgba(50, 63, 54, 0.18)' }}>Shane Coy</h1>
         <p style={{ fontFamily: fontMono, fontSize: 'clamp(0.92rem, 1.1vw, 1rem)', color: 'rgba(54, 59, 62, 0.96)', maxWidth: 560, lineHeight: 1.8 }}>
-          Building agentic infrastructure, AI Agents, software, online brands, and systems that compound value
+          Full Stack AI software engineer -  Building agentic infrastructure, AI Agents, software, online brands, and systems that compound value
         </p>
       </div>
       <nav style={{ position: 'absolute', top: isCompactNav ? 20 : 32, left: 'clamp(20px, 4vw, 48px)', right: 'clamp(20px, 4vw, 48px)', display: 'flex', justifyContent: 'space-between', alignItems: isCompactNav ? 'flex-start' : 'center', gap: isCompactNav ? 18 : 24, zIndex: 2 }}>
@@ -680,7 +680,7 @@ const App = () => {
             <SectionLabel>Work With Me</SectionLabel>
             <SectionTitle>Started building startups at 20. Haven't stopped.</SectionTitle>
             <p style={{ color: brand.steel, fontSize: '0.95rem', lineHeight: 1.8, marginBottom: isMobileLayout ? 36 : 44 }}>
-              Co-founded a social media analytics startup at 20, secured $300K in seed funding, built the data pipelines, and exited. Spent a decade in sales leadership closing multi-million dollar deals. Now I build production AI systems that eliminate manual work — and help engineering teams ship 3-5x faster with agent-first workflows. Consulting engagements have saved clients $25K+ annually and 25+ hours of monthly labor.
+              Co-founded a social media analytics startup at 20, secured seed funding, built data pipelines, and exited. Spent a decade in sales leadership closing multi-million dollar deals. Now I build production AI systems that eliminate repetitive work and help engineering teams ship 2-3x faster with agent-first workflows. Consulting engagements have saved clients $25K+ annually and 20+ hours of monthly labor.
             </p>
             {workToggleButtons}
             {workItemsPanel}

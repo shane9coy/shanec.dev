@@ -1,0 +1,40 @@
+{
+  "credentials": [
+    {
+      "service": "Hostaway",
+      "description": "Central PMS, OTA integration, owners statements, owners portal, centralized messaging",
+      "username": "eschick16@gmail.com",
+      "password": "20ssaddtX20$"
+    },
+    {
+      "service": "Breezeway",
+      "description": "Cleaning & Maintenance Teams Task Management software, also used to run payroll stubs and invoices for clients via Quickbooks",
+      "username": "erich.airbutler@gmail.com",
+      "password": "Rook159809!!!"
+    },
+    {
+      "service": "Pricelabs",
+      "description": "Pricing & Revenue Management Software managed by our full time revenue manager, Justine",
+      "username": "erich.airbutler@gmail.com",
+      "password": "Welcome2024$"
+    },
+    {
+      "service": "Calendly",
+      "description": "Appointment setter for new client sales calls",
+      "username": "eschick16@gmail.com",
+      "password": "send code"
+    },
+    {
+      "service": "GoHighLevel",
+      "description": "CRM for new client sales & onboarding inflow, Pete calls, new deals, etc.",
+      "username": "pete@airbutler.co",
+      "password": "Estica65!"
+    },
+    {
+      "service": "Quickbooks",
+      "description": "Payment processor, Invoicing and bookkeeping software",
+      "username": "eschick16@gmail.com",
+      "password": "Rook159809$$$"
+    }
+  ]
+}
