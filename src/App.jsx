@@ -9,6 +9,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 const brand = {
   bg:        '#ffffff',
   softForest: '#cfd4cf',
+  softTitan: '#CFD0D4',
   void:      '#050505',
   gold:      '#DAB986',
   creme:     '#C3B79D',
@@ -26,7 +27,7 @@ const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior:
 /* ═══════════════════════════════════════════════════
    ASCII HERO CANVAS
    ═══════════════════════════════════════════════════ */
-const AsciiHero = () => {
+const AsciiHero = ({ isCompactNav = false }) => {
   const canvasRef = useRef(null);
   const mousePosRef = useRef({ x: 0, y: 0 });
   const timeRef = useRef(0);
@@ -93,14 +94,14 @@ const AsciiHero = () => {
         </div>
         <h1 style={{ fontFamily: fontDisplay, fontSize: 'clamp(3.8rem, 8.2vw, 6.75rem)', fontWeight: 400, letterSpacing: '0.015em', lineHeight: 0.92, color: brand.gold, marginBottom: 18, textShadow: '0 20px 60px rgba(50, 63, 54, 0.18)' }}>Shane Coy</h1>
         <p style={{ fontFamily: fontMono, fontSize: 'clamp(0.92rem, 1.1vw, 1rem)', color: 'rgba(54, 59, 62, 0.96)', maxWidth: 560, lineHeight: 1.8 }}>
-          Building agentic infrastructure, AI Agents, software, brands, and systems that compound value
+          Building agentic infrastructure, AI Agents, software, online brands, and systems that compound value
         </p>
       </div>
-      <nav style={{ position: 'absolute', top: 32, left: 'clamp(24px, 4vw, 48px)', right: 'clamp(24px, 4vw, 48px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 2 }}>
-        <span style={{ fontFamily: fontMono, fontSize: '0.8rem', color: brand.creme, fontWeight: 600 }}>SHANEC.DEV</span>
-        <div style={{ display: 'flex', gap: 32 }}>
+      <nav style={{ position: 'absolute', top: isCompactNav ? 20 : 32, left: 'clamp(20px, 4vw, 48px)', right: 'clamp(20px, 4vw, 48px)', display: 'flex', justifyContent: 'space-between', alignItems: isCompactNav ? 'flex-start' : 'center', gap: isCompactNav ? 18 : 24, zIndex: 2 }}>
+        <span style={{ fontFamily: fontMono, fontSize: isCompactNav ? '0.74rem' : '0.8rem', color: brand.creme, fontWeight: 600, flexShrink: 0, paddingTop: isCompactNav ? 2 : 0 }}>SHANEC.DEV</span>
+        <div style={{ display: isCompactNav ? 'grid' : 'flex', gridTemplateColumns: isCompactNav ? 'repeat(2, max-content)' : undefined, columnGap: isCompactNav ? 14 : 32, rowGap: 8, justifyContent: 'flex-end', maxWidth: isCompactNav ? 210 : undefined, marginLeft: 'auto' }}>
           {[['Work With Me', 'consulting'], ['Projects', 'projects'], ['Case Studies', 'cases'], ['Applications', 'apps']].map(([label, id]) => (
-            <span key={id} onClick={() => scrollTo(id)} style={{ fontFamily: fontMono, fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.74)', cursor: 'pointer', letterSpacing: '0.03em', transition: 'color 0.3s' }}
+            <span key={id} onClick={() => scrollTo(id)} style={{ fontFamily: fontMono, fontSize: isCompactNav ? '0.66rem' : '0.75rem', color: 'rgba(255, 255, 255, 0.74)', cursor: 'pointer', letterSpacing: '0.03em', lineHeight: 1.15, transition: 'color 0.3s' }}
               onMouseEnter={e => e.target.style.color = brand.gold} onMouseLeave={e => e.target.style.color = 'rgba(255, 255, 255, 0.74)'}>{label}</span>
           ))}
         </div>
@@ -119,7 +120,7 @@ const Divider = () => (<div style={{ maxWidth: 1200, margin: '0 auto', padding: 
 /* ═══════════════════════════════════════════════════
    AVATAR — With costume selector and animation cycling
    ═══════════════════════════════════════════════════ */
-const AvatarAutoplay = () => {
+const AvatarAutoplay = ({ compact = false }) => {
   const mountRef = useRef(null);
   const mixerRef = useRef(null);
   const actionsRef = useRef({});
@@ -139,10 +140,10 @@ const AvatarAutoplay = () => {
     { name: 'Steve', path: '/avatar/costumes/Steve.glb', isShane: false },
     { name: 'Palmer', path: '/avatar/costumes/lucky.glb', isShane: false },
     { name: 'Jensen', path: '/avatar/costumes/jensen.glb', isShane: false },
-    { name: 'Altman', path: '/avatar/costumes/Altman.glb', isShane: false },
     { name: 'Elon', path: '/avatar/costumes/Elon.glb', isShane: false },
-    { name: 'Anima', path: '/avatar/costumes/Anima.glb', isShane: false },
+    { name: 'Altman', path: '/avatar/costumes/Altman.glb', isShane: false },
     { name: 'Gekko', path: '/avatar/costumes/Gekko.glb', isShane: false },
+    { name: 'Anima', path: '/avatar/costumes/Anima.glb', isShane: false },
     { name: 'Hairy', path: '/avatar/costumes/hairy.glb', isShane: false },
     { name: 'Luke', path: '/avatar/costumes/Luke.glb', isShane: false },
     { name: 'Messi', path: '/avatar/costumes/Messi.glb', isShane: false },
@@ -356,23 +357,23 @@ const AvatarAutoplay = () => {
 
   return (
     <div style={{ width: '100%' }}>
-      <div ref={mountRef} style={{ width: '100%', height: 600, borderRadius: 2, overflow: 'hidden', position: 'relative', background: `radial-gradient(ellipse at center bottom, ${brand.softTitan}22 0%, transparent 70%)` }}>
+      <div ref={mountRef} style={{ width: '100%', height: compact ? 'clamp(320px, 78vw, 420px)' : 600, borderRadius: 2, overflow: 'hidden', position: 'relative', background: `radial-gradient(ellipse at center bottom, ${brand.softTitan}22 0%, transparent 70%)` }}>
         {!loaded && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: fontMono, fontSize: '0.75rem', color: brand.creme, letterSpacing: '0.1em' }}>Loading...</div>}
       </div>
       
       {/* Costume Selector */}
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-        <div style={{ fontFamily: fontMono, fontSize: '0.65rem', color: brand.creme, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Choose your founder</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+      <div style={{ marginTop: compact ? 18 : 24, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 10 : 12 }}>
+        <div style={{ fontFamily: fontMono, fontSize: compact ? '0.6rem' : '0.65rem', color: brand.creme, letterSpacing: '0.15em', textTransform: 'uppercase', textAlign: 'center' }}>Choose your founder</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: compact ? 16 : 24, width: '100%' }}>
           <button 
             onClick={() => changeCostume('prev')}
             style={{ 
-              width: 40, height: 40, 
+              width: compact ? 36 : 40, height: compact ? 36 : 40, 
               border: `1px solid ${brand.softTitan}`, 
               borderRadius: '50%',
               background: 'transparent',
               color: brand.steel,
-              fontSize: '1.2rem',
+              fontSize: compact ? '1rem' : '1.2rem',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -386,10 +387,10 @@ const AvatarAutoplay = () => {
           </button>
           <div style={{ 
             fontFamily: fontMain, 
-            fontSize: '1.1rem', 
+            fontSize: compact ? '1rem' : '1.1rem', 
             fontWeight: 500, 
             color: brand.void,
-            minWidth: 100,
+            minWidth: compact ? 84 : 100,
             textAlign: 'center'
           }}>
             {currentCostume.name}
@@ -397,12 +398,12 @@ const AvatarAutoplay = () => {
           <button 
             onClick={() => changeCostume('next')}
             style={{ 
-              width: 40, height: 40, 
+              width: compact ? 36 : 40, height: compact ? 36 : 40, 
               border: `1px solid ${brand.softTitan}`, 
               borderRadius: '50%',
               background: 'transparent',
               color: brand.steel,
-              fontSize: '1.2rem',
+              fontSize: compact ? '1rem' : '1.2rem',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -457,7 +458,12 @@ const ProjectShowcase = ({ title, url, tags, description, features }) => {
    ═══════════════════════════════════════════════════ */
 const CaseStudy = ({ company, industry, challenge, solution, results, tech, columnRatio, url }) => {
   const [open, setOpen] = useState(false);
-  const cols = columnRatio || '1fr 1fr';
+  const renderDetailContent = (content) => {
+    if (content == null) return null;
+    if (React.isValidElement(content)) return content;
+    return <div style={{ color: brand.steel, fontSize: '0.9rem', lineHeight: 1.7 }}>{content}</div>;
+  };
+
   return (
     <div style={{ borderTop: `1px solid ${brand.softTitan}`, padding: '36px 0' }}>
       <div onClick={() => setOpen(!open)} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
@@ -470,14 +476,28 @@ const CaseStudy = ({ company, industry, challenge, solution, results, tech, colu
         </div>
         <span style={{ fontFamily: fontMono, fontSize: '1.2rem', color: brand.gold, transform: open ? 'rotate(45deg)' : 'none', transition: 'transform 0.3s', display: 'inline-block' }}>+</span>
       </div>
-      <div style={{ maxHeight: open ? 700 : 0, overflow: 'hidden', transition: 'max-height 0.5s cubic-bezier(0.19,1,0.22,1)' }}>
-        <div style={{ paddingTop: 28, display: 'grid', gridTemplateColumns: cols, gap: 40 }}>
-          <div><div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Challenge</div><p style={{ color: brand.steel, fontSize: '0.9rem', lineHeight: 1.7 }}>{challenge}</p></div>
-          <div><div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Solution</div><p style={{ color: brand.steel, fontSize: '0.9rem', lineHeight: 1.7 }}>{solution}</p></div>
-          <div><div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Results</div>
-            <ul style={{ listStyle: 'none', padding: 0 }}>{results.map((r, i) => <li key={i} style={{ color: brand.void, fontSize: '0.88rem', padding: '3px 0 3px 16px', position: 'relative', fontWeight: 500 }}><span style={{ position: 'absolute', left: 0, color: brand.gold, fontWeight: 400 }}>•</span>{r}</li>)}</ul></div>
-          <div><div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Stack</div>
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>{tech.map(t => <span key={t} style={{ fontFamily: fontMono, fontSize: '0.63rem', color: brand.militar, border: `1px solid ${brand.softTitan}`, borderRadius: 2, padding: '2px 8px' }}>{t}</span>)}</div></div>
+      <div style={{ maxHeight: open ? 2000 : 0, overflow: 'hidden', transition: 'max-height 0.6s cubic-bezier(0.19,1,0.22,1)' }}>
+        <div style={{ paddingTop: 28, display: 'flex', flexDirection: 'column', gap: 28 }}>
+          <div>
+            <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Challenge</div>
+            {renderDetailContent(challenge)}
+          </div>
+          <div>
+            <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Solution</div>
+            {renderDetailContent(solution)}
+          </div>
+          {results.length > 0 && (
+            <div>
+              <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Results</div>
+              <ul style={{ listStyle: 'none', padding: 0 }}>{results.map((r, i) => <li key={i} style={{ color: brand.void, fontSize: '0.88rem', padding: '3px 0 3px 16px', position: 'relative', fontWeight: 500 }}><span style={{ position: 'absolute', left: 0, color: brand.gold, fontWeight: 400 }}>•</span>{r}</li>)}</ul>
+            </div>
+          )}
+          {tech.length > 0 && (
+            <div>
+              <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Stack</div>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>{tech.map(t => <span key={t} style={{ fontFamily: fontMono, fontSize: '0.63rem', color: brand.militar, border: `1px solid ${brand.softTitan}`, borderRadius: 2, padding: '2px 8px' }}>{t}</span>)}</div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -533,7 +553,7 @@ const CalEmbed = () => {
   return (
     <iframe 
       src="https://cal.com/shane-coy-mlofry/20min?embed=true&theme=light"
-      style={{ width: '80%', height: '80%', minHeight: '460px', border: 'none', display: 'block', margin: '0 auto' }}
+      style={{ width: '80%', height: '80%', minHeight: '400px', border: 'none', display: 'block', margin: '0 auto' }}
       title="Book a discovery call"
     />
   );
@@ -545,14 +565,24 @@ const CalEmbed = () => {
 const App = () => {
   const [showStack, setShowStack] = useState(false);
   const [workPanelMinHeight, setWorkPanelMinHeight] = useState(0);
+  const [viewportWidth, setViewportWidth] = useState(() => typeof window === 'undefined' ? 1200 : window.innerWidth);
   const servicesMeasureRef = useRef(null);
   const stackMeasureRef = useRef(null);
+  const isMobileLayout = viewportWidth <= 960;
+  const isCompactNav = viewportWidth <= 720;
 
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `@font-face { font-family: 'Sakire'; src: url('/fonts/Sakire.ttf') format('truetype'); font-display: swap; } * { box-sizing: border-box; margin: 0; padding: 0; } html { scroll-behavior: smooth; } body { overflow-x: hidden; } @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } } ::selection { background: ${brand.gold}; color: ${brand.void}; }`;
     document.head.appendChild(style);
     return () => { document.head.removeChild(style); };
+  }, []);
+
+  useEffect(() => {
+    const updateViewportWidth = () => setViewportWidth(window.innerWidth);
+    updateViewportWidth();
+    window.addEventListener('resize', updateViewportWidth);
+    return () => window.removeEventListener('resize', updateViewportWidth);
   }, []);
 
   const services = [
@@ -579,6 +609,32 @@ const App = () => {
           <div style={{ color: brand.steel, fontSize: '0.85rem', lineHeight: 1.5 }}>{desc}</div>
         </div>
       ))}
+    </div>
+  );
+
+  const workToggleButtons = (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: isMobileLayout ? 'center' : 'flex-start', marginBottom: 28 }}>
+      <button onClick={() => setShowStack(false)} style={{ fontFamily: fontMono, fontSize: '0.72rem', letterSpacing: '0.05em', padding: '8px 20px', border: `1px solid ${!showStack ? brand.gold : brand.softTitan}`, borderRadius: 2, background: !showStack ? `${brand.gold}15` : 'transparent', color: !showStack ? brand.gold : brand.steel, cursor: 'pointer', transition: 'all 0.3s' }}>What I Offer</button>
+      <button onClick={() => setShowStack(true)} style={{ fontFamily: fontMono, fontSize: '0.72rem', letterSpacing: '0.05em', padding: '8px 20px', border: `1px solid ${showStack ? brand.gold : brand.softTitan}`, borderRadius: 2, background: showStack ? `${brand.gold}15` : 'transparent', color: showStack ? brand.gold : brand.steel, cursor: 'pointer', transition: 'all 0.3s' }}>See My Stack</button>
+    </div>
+  );
+
+  const workItemsPanel = (
+    <div style={{ position: 'relative', minHeight: isMobileLayout ? undefined : workPanelMinHeight || undefined }}>
+      {renderWorkItems(showStack ? stack : services)}
+      <div aria-hidden style={{ position: 'absolute', top: 0, left: 0, width: '100%', visibility: 'hidden', pointerEvents: 'none', zIndex: -1 }}>
+        <div ref={servicesMeasureRef}>{renderWorkItems(services)}</div>
+        <div ref={stackMeasureRef}>{renderWorkItems(stack)}</div>
+      </div>
+    </div>
+  );
+
+  const consultingAvatar = (
+    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignSelf: 'start', position: 'relative', zIndex: 1, marginTop: isMobileLayout ? 28 : 40, transform: isMobileLayout ? 'none' : 'translateY(90px)', width: '100%', maxWidth: isMobileLayout ? 460 : undefined, marginLeft: isMobileLayout ? 'auto' : undefined, marginRight: isMobileLayout ? 'auto' : undefined, marginBottom: isMobileLayout ? 20 : 0 }}>
+      <div style={{ position: 'absolute', top: isMobileLayout ? 76 : 108, right: -10, bottom: -10, left: 0, background: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 12%, rgba(255, 255, 255, 0.74) 28%, rgba(255, 255, 255, 0.94) 42%, rgba(255, 255, 255, 1) 58%, rgba(255, 255, 255, 1) 100%)', filter: 'blur(14px)', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <AvatarAutoplay compact={isMobileLayout} />
+      </div>
     </div>
   );
 
@@ -612,37 +668,24 @@ const App = () => {
   return (
     <div style={{ backgroundColor: brand.bg, color: brand.void, fontFamily: fontMain }}>
 
-      <AsciiHero />
+      <AsciiHero isCompactNav={isCompactNav} />
 
       {/* ═══ WORK WITH ME ═══ */}
       <div style={{ position: 'relative', marginTop: -1 }}>
         <div style={{ position: 'absolute', top: -18, left: 0, right: 0, height: 118, background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.08) 34%, rgba(255, 255, 255, 0.02) 68%, rgba(255, 255, 255, 0) 100%)', pointerEvents: 'none', zIndex: 0 }} />
         <Section id="consulting">
-          <div style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64 }}>
+          <div style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: isMobileLayout ? '1fr' : '1fr 1fr', gap: isMobileLayout ? 32 : 64, alignItems: 'start' }}>
           <div>
+            {isMobileLayout && consultingAvatar}
             <SectionLabel>Work With Me</SectionLabel>
             <SectionTitle>Started building startups at 20. Haven't stopped.</SectionTitle>
-            <p style={{ color: brand.steel, fontSize: '0.95rem', lineHeight: 1.8, marginBottom: 32 }}>
+            <p style={{ color: brand.steel, fontSize: '0.95rem', lineHeight: 1.8, marginBottom: isMobileLayout ? 36 : 44 }}>
               Co-founded a social media analytics startup at 20, secured $300K in seed funding, built the data pipelines, and exited. Spent a decade in sales leadership closing multi-million dollar deals. Now I build production AI systems that eliminate manual work — and help engineering teams ship 3-5x faster with agent-first workflows. Consulting engagements have saved clients $25K+ annually and 25+ hours of monthly labor.
             </p>
-            <div style={{ display: 'flex', gap: 12, marginBottom: 28 }}>
-              <button onClick={() => setShowStack(false)} style={{ fontFamily: fontMono, fontSize: '0.72rem', letterSpacing: '0.05em', padding: '8px 20px', border: `1px solid ${!showStack ? brand.gold : brand.softTitan}`, borderRadius: 2, background: !showStack ? `${brand.gold}15` : 'transparent', color: !showStack ? brand.gold : brand.steel, cursor: 'pointer', transition: 'all 0.3s' }}>What I Offer</button>
-              <button onClick={() => setShowStack(true)} style={{ fontFamily: fontMono, fontSize: '0.72rem', letterSpacing: '0.05em', padding: '8px 20px', border: `1px solid ${showStack ? brand.gold : brand.softTitan}`, borderRadius: 2, background: showStack ? `${brand.gold}15` : 'transparent', color: showStack ? brand.gold : brand.steel, cursor: 'pointer', transition: 'all 0.3s' }}>See My Stack</button>
-            </div>
-            <div style={{ position: 'relative', minHeight: workPanelMinHeight || undefined }}>
-              {renderWorkItems(showStack ? stack : services)}
-              <div aria-hidden style={{ position: 'absolute', top: 0, left: 0, width: '100%', visibility: 'hidden', pointerEvents: 'none', zIndex: -1 }}>
-                <div ref={servicesMeasureRef}>{renderWorkItems(services)}</div>
-                <div ref={stackMeasureRef}>{renderWorkItems(stack)}</div>
-              </div>
-            </div>
+            {workToggleButtons}
+            {workItemsPanel}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignSelf: 'start', position: 'relative', zIndex: 1, marginTop: 40, transform: 'translateY(90px)' }}>
-            <div style={{ position: 'absolute', top: 108, right: -10, bottom: -10, left: 0, background: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 12%, rgba(255, 255, 255, 0.74) 28%, rgba(255, 255, 255, 0.94) 42%, rgba(255, 255, 255, 1) 58%, rgba(255, 255, 255, 1) 100%)', filter: 'blur(14px)', pointerEvents: 'none', zIndex: 0 }} />
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              <AvatarAutoplay />
-            </div>
-          </div>
+          {!isMobileLayout && consultingAvatar}
           </div>
         </Section>
       </div>
