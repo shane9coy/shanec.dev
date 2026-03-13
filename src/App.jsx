@@ -8,7 +8,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const brand = {
   bg:        '#ffffff',
-  softTitan: '#CFD0D4',
+  softForest: '#cfd4cf',
   void:      '#050505',
   gold:      '#DAB986',
   creme:     '#C3B79D',
@@ -235,7 +235,7 @@ const AvatarAutoplay = () => {
         loader.load(url, (gltf) => {
           if (!baseModel) { 
             baseModel = gltf.scene; 
-            baseModel.scale.set(0.96, 0.96, 0.96); 
+            baseModel.scale.set(1.0, 1.0, 1.0); 
             baseModel.position.set(0, 0, 0); 
             scene.add(baseModel); 
             mixerRef.current = new THREE.AnimationMixer(baseModel); 
@@ -533,7 +533,7 @@ const CalEmbed = () => {
   return (
     <iframe 
       src="https://cal.com/shane-coy-mlofry/20min?embed=true&theme=light"
-      style={{ width: '80%', height: '80%', minHeight: '500px', border: 'none', display: 'block', margin: '0 auto' }}
+      style={{ width: '80%', height: '80%', minHeight: '460px', border: 'none', display: 'block', margin: '0 auto' }}
       title="Book a discovery call"
     />
   );
@@ -544,6 +544,9 @@ const CalEmbed = () => {
    ═══════════════════════════════════════════════════ */
 const App = () => {
   const [showStack, setShowStack] = useState(false);
+  const [workPanelMinHeight, setWorkPanelMinHeight] = useState(0);
+  const servicesMeasureRef = useRef(null);
+  const stackMeasureRef = useRef(null);
 
   useEffect(() => {
     const style = document.createElement('style');
@@ -568,6 +571,44 @@ const App = () => {
     ['Frontend & Integrations', 'Tailwind CSS, Radix UI, Playwright, responsive design, Git, npm publishing, Telegram/WhatsApp/Discord/Slack/Signal integrations'],
   ];
 
+  const renderWorkItems = (items) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {items.map(([title, desc]) => (
+        <div key={title} style={{ borderLeft: `2px solid ${brand.gold}`, paddingLeft: 20 }}>
+          <div style={{ fontFamily: fontMain, fontSize: '0.95rem', fontWeight: 600, color: brand.void, marginBottom: 4 }}>{title}</div>
+          <div style={{ color: brand.steel, fontSize: '0.85rem', lineHeight: 1.5 }}>{desc}</div>
+        </div>
+      ))}
+    </div>
+  );
+
+  useEffect(() => {
+    const measurePanelHeight = () => {
+      const servicesHeight = servicesMeasureRef.current?.offsetHeight || 0;
+      const stackHeight = stackMeasureRef.current?.offsetHeight || 0;
+      const nextHeight = Math.max(servicesHeight, stackHeight);
+      if (nextHeight) {
+        setWorkPanelMinHeight(prev => prev === nextHeight ? prev : nextHeight);
+      }
+    };
+
+    measurePanelHeight();
+    window.addEventListener('resize', measurePanelHeight);
+
+    if (typeof ResizeObserver === 'undefined') {
+      return () => window.removeEventListener('resize', measurePanelHeight);
+    }
+
+    const observer = new ResizeObserver(measurePanelHeight);
+    if (servicesMeasureRef.current) observer.observe(servicesMeasureRef.current);
+    if (stackMeasureRef.current) observer.observe(stackMeasureRef.current);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measurePanelHeight);
+    };
+  }, []);
+
   return (
     <div style={{ backgroundColor: brand.bg, color: brand.void, fontFamily: fontMain }}>
 
@@ -588,17 +629,16 @@ const App = () => {
               <button onClick={() => setShowStack(false)} style={{ fontFamily: fontMono, fontSize: '0.72rem', letterSpacing: '0.05em', padding: '8px 20px', border: `1px solid ${!showStack ? brand.gold : brand.softTitan}`, borderRadius: 2, background: !showStack ? `${brand.gold}15` : 'transparent', color: !showStack ? brand.gold : brand.steel, cursor: 'pointer', transition: 'all 0.3s' }}>What I Offer</button>
               <button onClick={() => setShowStack(true)} style={{ fontFamily: fontMono, fontSize: '0.72rem', letterSpacing: '0.05em', padding: '8px 20px', border: `1px solid ${showStack ? brand.gold : brand.softTitan}`, borderRadius: 2, background: showStack ? `${brand.gold}15` : 'transparent', color: showStack ? brand.gold : brand.steel, cursor: 'pointer', transition: 'all 0.3s' }}>See My Stack</button>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              {(showStack ? stack : services).map(([title, desc]) => (
-                <div key={title} style={{ borderLeft: `2px solid ${brand.gold}`, paddingLeft: 20 }}>
-                  <div style={{ fontFamily: fontMain, fontSize: '0.95rem', fontWeight: 600, color: brand.void, marginBottom: 4 }}>{title}</div>
-                  <div style={{ color: brand.steel, fontSize: '0.85rem', lineHeight: 1.5 }}>{desc}</div>
-                </div>
-              ))}
+            <div style={{ position: 'relative', minHeight: workPanelMinHeight || undefined }}>
+              {renderWorkItems(showStack ? stack : services)}
+              <div aria-hidden style={{ position: 'absolute', top: 0, left: 0, width: '100%', visibility: 'hidden', pointerEvents: 'none', zIndex: -1 }}>
+                <div ref={servicesMeasureRef}>{renderWorkItems(services)}</div>
+                <div ref={stackMeasureRef}>{renderWorkItems(stack)}</div>
+              </div>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
-            <div style={{ position: 'absolute', top: 96, right: -10, bottom: -10, left: 0, background: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 12%, rgba(255, 255, 255, 0.74) 28%, rgba(255, 255, 255, 0.94) 42%, rgba(255, 255, 255, 1) 58%, rgba(255, 255, 255, 1) 100%)', filter: 'blur(14px)', pointerEvents: 'none', zIndex: 0 }} />
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignSelf: 'start', position: 'relative', zIndex: 1, marginTop: 40, transform: 'translateY(90px)' }}>
+            <div style={{ position: 'absolute', top: 108, right: -10, bottom: -10, left: 0, background: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 12%, rgba(255, 255, 255, 0.74) 28%, rgba(255, 255, 255, 0.94) 42%, rgba(255, 255, 255, 1) 58%, rgba(255, 255, 255, 1) 100%)', filter: 'blur(14px)', pointerEvents: 'none', zIndex: 0 }} />
             <div style={{ position: 'relative', zIndex: 1 }}>
               <AvatarAutoplay />
             </div>
@@ -610,8 +650,10 @@ const App = () => {
       {/* ═══ BOOK A CALL ═══ */}
       <Section id="book">
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
-          <SectionLabel>Discovery Call</SectionLabel>
-          <h2 style={{ fontFamily: fontMain, fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 300, color: brand.void, letterSpacing: '-0.02em' }}>Discovery call. Let's see what we can build or automate.</h2>
+          <SectionLabel>Regain time & money</SectionLabel>
+          <h2 style={{ fontFamily: fontMain, fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 300, color: brand.void, letterSpacing: '-0.02em' }}>
+            Book that discovery call -<br /> Let's see what we can build or automate.
+          </h2>
         </div>
         <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
           <CalEmbed />
