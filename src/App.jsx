@@ -772,7 +772,7 @@ const App = () => {
         <CaseStudy company="Hiku Wire" industry="Full-Stack E-Commerce Application"
           challenge="Custom full-stack e-commerce application with integrated image and video content management, SQL backend database, and user authentication."
           solution={
-            <video src="/media/hikuwire-compressed.mp4" autoPlay loop muted playsInline style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 2 }} />
+            <video src="/media/hikuwire-compressed.mp4" autoPlay loop muted playsInline preload="none" style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 2 }} />
           }
           results={[]}
           tech={[]}
@@ -780,7 +780,7 @@ const App = () => {
         <CaseStudy company="Horizon Peptides" industry="Brand & Web Full Stack Design"
           challenge="Brand identity and website design for an online peptide retail store. Complete branding package with custom website, and online store with product-focused landing page."
           solution={
-            <video src="/media/horizon-compressed.mp4" autoPlay loop muted playsInline style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 2 }} />
+            <video src="/media/horizon-compressed.mp4" autoPlay loop muted playsInline preload="none" style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 2 }} />
           }
           results={[]}
           tech={[]}
