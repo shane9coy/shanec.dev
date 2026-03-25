@@ -770,21 +770,17 @@ const App = () => {
         <SectionLabel>Applications</SectionLabel>
         <SectionTitle>Full-stack builds.</SectionTitle>
         <CaseStudy company="Hiku Wire" industry="Full-Stack E-Commerce Application"
-          challenge="Custom full-stack e-commerce application with integrated image and video content management, SQL backend database, and user authentication. Currently in active development."
+          challenge="Custom full-stack e-commerce application with integrated image and video content management, SQL backend database, and user authentication."
           solution={
-            <div style={{ width: '100%', height: 160, background: brand.void, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
-              <div style={{ fontFamily: fontMono, fontSize: '0.72rem', color: brand.steel, letterSpacing: '0.1em' }}>Video placeholder</div>
-            </div>
+            <video src="/media/hikuwire-recording.mov" autoPlay loop muted playsInline style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 2 }} />
           }
           results={[]}
           tech={[]}
           columnRatio="1fr 2fr" />
         <CaseStudy company="Horizon Peptides" industry="Brand & Web Full Stack Design"
-          challenge="Brand identity and website design for an online peptide retail store. Complete brand system with product-focused landing pages and signup flow."
+          challenge="Brand identity and website design for an online peptide retail store. Complete branding package with custom website, and online store with product-focused landing page."
           solution={
-            <div style={{ width: '100%', height: 160, background: brand.void, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
-              <div style={{ fontFamily: fontMono, fontSize: '0.72rem', color: brand.steel, letterSpacing: '0.1em' }}>Video placeholder</div>
-            </div>
+            <video src="/media/horizon-recording.mov" autoPlay loop muted playsInline style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 2 }} />
           }
           results={[]}
           tech={[]}
