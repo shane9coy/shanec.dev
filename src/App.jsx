@@ -201,12 +201,16 @@ const AvatarAutoplay = ({ compact = false }) => {
       clearTimeout(cycleTimeoutRef.current);
     }
 
+    ////////////////////////////////////////////////////////////////
+    // CAMERA SETUP, RENDERER, LIGHTING, SHADOW, AND MODEL LOADING
+    ///////////////////////////////////////////////////////////////
+
     const loadThree = async () => {
       const THREE = await import('three');
       const scene = new THREE.Scene();
       const w = mount.clientWidth, h = mount.clientHeight;
       const camera = new THREE.PerspectiveCamera(30, w / h, 0.1, 100);
-      camera.position.set(0, 0.9, 3.8); camera.lookAt(0, 0.9, 0);
+      camera.position.set(0, 1.4, 3.8); camera.lookAt(0, 0.9, 0);
       const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
       renderer.setSize(w, h); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.2;
@@ -217,7 +221,8 @@ const AvatarAutoplay = ({ compact = false }) => {
       }
       mount.appendChild(renderer.domElement);
       
-      scene.add(new THREE.DirectionalLight(0xDAB986, 2.5).translateX(3).translateY(4).translateZ(3));
+      // Lights - Lighting
+      scene.add(new THREE.DirectionalLight(0xDAB986, 2.5).translateX(2).translateY(-2).translateZ(3));
       scene.add(new THREE.DirectionalLight(0xCFD0D4, 1.0).translateX(-2).translateY(2).translateZ(-1));
       scene.add(new THREE.DirectionalLight(0xffffff, 0.8).translateY(3).translateZ(-3));
       scene.add(new THREE.AmbientLight(0xffffff, 0.4));
@@ -477,26 +482,35 @@ const CaseStudy = ({ company, industry, challenge, solution, results, tech, colu
         <span style={{ fontFamily: fontMono, fontSize: '1.2rem', color: brand.gold, transform: open ? 'rotate(45deg)' : 'none', transition: 'transform 0.3s', display: 'inline-block' }}>+</span>
       </div>
       <div style={{ maxHeight: open ? 2000 : 0, overflow: 'hidden', transition: 'max-height 0.6s cubic-bezier(0.19,1,0.22,1)' }}>
-        <div style={{ paddingTop: 28, display: 'flex', flexDirection: 'column', gap: 28 }}>
-          <div>
-            <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Challenge</div>
-            {renderDetailContent(challenge)}
-          </div>
-          <div>
-            <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Solution</div>
-            {renderDetailContent(solution)}
-          </div>
-          {results.length > 0 && (
-            <div>
-              <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Results</div>
-              <ul style={{ listStyle: 'none', padding: 0 }}>{results.map((r, i) => <li key={i} style={{ color: brand.void, fontSize: '0.88rem', padding: '3px 0 3px 16px', position: 'relative', fontWeight: 500 }}><span style={{ position: 'absolute', left: 0, color: brand.gold, fontWeight: 400 }}>•</span>{r}</li>)}</ul>
-            </div>
-          )}
-          {tech.length > 0 && (
-            <div>
-              <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Stack</div>
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>{tech.map(t => <span key={t} style={{ fontFamily: fontMono, fontSize: '0.63rem', color: brand.militar, border: `1px solid ${brand.softTitan}`, borderRadius: 2, padding: '2px 8px' }}>{t}</span>)}</div>
-            </div>
+        <div style={{ paddingTop: 28, display: columnRatio ? 'grid' : 'flex', gridTemplateColumns: columnRatio || undefined, gap: columnRatio ? 32 : 28, flexDirection: 'column' }}>
+          {columnRatio ? (
+            <>
+              <div>
+                <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Application</div>
+                {renderDetailContent(challenge)}
+              </div>
+              <div>{solution && renderDetailContent(solution)}</div>
+            </>
+          ) : (
+            <>
+              <div>
+                <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Application</div>
+                {renderDetailContent(challenge)}
+              </div>
+              {solution && <div>{renderDetailContent(solution)}</div>}
+              {results.length > 0 && (
+                <div>
+                  <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Results</div>
+                  <ul style={{ listStyle: 'none', padding: 0 }}>{results.map((r, i) => <li key={i} style={{ color: brand.void, fontSize: '0.88rem', padding: '3px 0 3px 16px', position: 'relative', fontWeight: 500 }}><span style={{ position: 'absolute', left: 0, color: brand.gold, fontWeight: 400 }}>•</span>{r}</li>)}</ul>
+                </div>
+              )}
+              {tech.length > 0 && (
+                <div>
+                  <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Stack</div>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>{tech.map(t => <span key={t} style={{ fontFamily: fontMono, fontSize: '0.63rem', color: brand.militar, border: `1px solid ${brand.softTitan}`, borderRadius: 2, padding: '2px 8px' }}>{t}</span>)}</div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -770,17 +784,17 @@ const App = () => {
         <SectionLabel>Applications</SectionLabel>
         <SectionTitle>Full-stack builds.</SectionTitle>
         <CaseStudy company="Hiku Wire" industry="Full-Stack E-Commerce Application"
-          challenge="Custom full-stack e-commerce application with integrated image and video content management, SQL backend database, and user authentication."
+          challenge="Custom full-stack e-commerce application with integrated image and video content management, postgresSQL, Stripe integration, and user auth."
           solution={
-            <video src="/media/hikuwire-compressed.mp4" autoPlay loop muted playsInline preload="none" style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 2 }} />
+            <video src="/media/hiku-compressed.mp4" autoPlay loop muted playsInline preload="auto" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 2 }} />
           }
           results={[]}
           tech={[]}
           columnRatio="1fr 2fr" />
         <CaseStudy company="Horizon Peptides" industry="Brand & Web Full Stack Design"
-          challenge="Brand identity and website design for an online peptide retail store. Complete branding package with custom website, and online store with product-focused landing page."
+          challenge="Brand identity and website design for an online peptide retail store. Complete branding package with custom website, and online store with product-focused landing page. Rendered product shots and media content"
           solution={
-            <video src="/media/horizon-compressed.mp4" autoPlay loop muted playsInline preload="none" style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 2 }} />
+            <video src="/media/horizon-compressed.mp4" autoPlay loop muted playsInline preload="none" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 2 }} />
           }
           results={[]}
           tech={[]}
