@@ -7,6 +7,9 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'esbuild',
+    // `three` is loaded in its own lazy chunk for the avatar/canvas experience.
+    // The bundle is intentionally large enough to trip Vite's default 500 kB warning.
+    chunkSizeWarningLimit: 750,
     rollupOptions: {
       output: {
         manualChunks: {

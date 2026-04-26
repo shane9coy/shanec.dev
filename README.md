@@ -26,12 +26,7 @@ npm run preview
 
 The 3D avatar feature requires GLB model files in the `public/avatar/` directory:
 
-- `initial.glb` - Initial pose (plays once on load)
-- `standing.glb` - Idle standing animation
-- `point.glb` - Pointing gesture
-- `kick.glb` - Kick animation
-- `chair.glb` - Sitting on chair
-- `backflip.glb` - Backflip animation
+- `standing.glb` - Idle standing animation for the default avatar
 
 Place your `.glb` files in `public/avatar/` before building for production.
 
