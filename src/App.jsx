@@ -1,9 +1,14 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 /* ═══════════════════════════════════════════════════
    SHANE COY — shanc.dev
    Brand: Void Black, Golden Ray, Militar Night,
           Urban Steel, Soft Titanium, Creme White, Obsidian Green
+   Purpose: Portfolio landing page with a hero, recruiter-facing content, and
+            a Three.js Shane avatar driven by the standing.glb animation.
+   Main inputs: Static copy, project data, public avatar GLB assets, viewport size.
+   Main outputs: Rendered React/Vite portfolio page.
+   Safe config: Brand colors, section copy, project arrays, and avatar asset paths.
    ═══════════════════════════════════════════════════ */
 
 const brand = {
@@ -94,7 +99,7 @@ const AsciiHero = ({ isCompactNav = false }) => {
         </div>
         <h1 style={{ fontFamily: fontDisplay, fontSize: 'clamp(3.8rem, 8.2vw, 6.75rem)', fontWeight: 400, letterSpacing: '0.015em', lineHeight: 0.92, color: brand.gold, marginBottom: 18, textShadow: '0 20px 60px rgba(50, 63, 54, 0.18)' }}>Shane Coy</h1>
         <p style={{ fontFamily: fontMono, fontSize: 'clamp(0.92rem, 1.1vw, 1rem)', color: 'rgba(54, 59, 62, 0.96)', maxWidth: 560, lineHeight: 1.8 }}>
-          AI Engineer - Production LLM systems, custom durable chatbots, automations, and data pipelines that eliminate repetitive work and lower software spend
+          AI Engineer - Production LLM applications, custom agents, and Python/data systems that reduce manual work and software spend
         </p>
       </div>
       <nav style={{ position: 'absolute', top: isCompactNav ? 20 : 32, left: 'clamp(20px, 4vw, 48px)', right: 'clamp(20px, 4vw, 48px)', display: 'flex', justifyContent: 'space-between', alignItems: isCompactNav ? 'flex-start' : 'center', gap: isCompactNav ? 18 : 24, zIndex: 2 }}>
@@ -118,7 +123,7 @@ const SectionTitle = ({ children }) => (<h2 style={{ fontFamily: fontMain, fontS
 const Divider = () => (<div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 48px' }}><div style={{ height: 1, background: brand.softTitan }} /></div>);
 
 /* ═══════════════════════════════════════════════════
-   AVATAR — With costume selector and idle-only default
+   AVATAR — Original Shane standing animation only
    ═══════════════════════════════════════════════════ */
 const AvatarAutoplay = ({ compact = false }) => {
   const mountRef = useRef(null);
@@ -131,43 +136,43 @@ const AvatarAutoplay = ({ compact = false }) => {
   const targetRotationRef = useRef(0);
   const currentRotationRef = useRef(0);
   const [loaded, setLoaded] = useState(false);
-  const [costumeIndex, setCostumeIndex] = useState(0);
+  // const [costumeIndex, setCostumeIndex] = useState(0);
 
-  // Costume list - index 0 is the original Shane avatar.
-  const costumes = [
-    { name: 'Shane', path: '', isShane: true },
-    { name: 'Steve', path: '/avatar/costumes/Steve.glb', isShane: false },
-    { name: 'Palmer', path: '/avatar/costumes/lucky.glb', isShane: false },
-    { name: 'Jensen', path: '/avatar/costumes/jensen.glb', isShane: false },
-    { name: 'Elon', path: '/avatar/costumes/Elon.glb', isShane: false },
-    { name: 'Altman', path: '/avatar/costumes/Altman.glb', isShane: false },
-    { name: 'Gekko', path: '/avatar/costumes/Gekko.glb', isShane: false },
-    { name: 'Anima', path: '/avatar/costumes/Anima.glb', isShane: false },
-    { name: 'Hairy', path: '/avatar/costumes/hairy.glb', isShane: false },
-    { name: 'Luke', path: '/avatar/costumes/Luke.glb', isShane: false },
-    { name: 'Messi', path: '/avatar/costumes/Messi.glb', isShane: false },
-    { name: 'Player 456', path: '/avatar/costumes/Player 456.glb', isShane: false },
-    { name: 'Priest', path: '/avatar/costumes/Priest.glb', isShane: false },
-    { name: 'Sir Lancelot', path: '/avatar/costumes/SirLancelot.glb', isShane: false },
-    { name: 'Tech Bro', path: '/avatar/costumes/Tech bro.glb', isShane: false },
-  ];
+  // Costume list is commented out for now so the page only loads the original Shane animation.
+  // const costumes = [
+  //   { name: 'Shane', path: '', isShane: true },
+  //   { name: 'Steve', path: '/avatar/costumes/Steve.glb', isShane: false },
+  //   { name: 'Palmer', path: '/avatar/costumes/lucky.glb', isShane: false },
+  //   { name: 'Jensen', path: '/avatar/costumes/jensen.glb', isShane: false },
+  //   { name: 'Elon', path: '/avatar/costumes/Elon.glb', isShane: false },
+  //   { name: 'Altman', path: '/avatar/costumes/Altman.glb', isShane: false },
+  //   { name: 'Gekko', path: '/avatar/costumes/Gekko.glb', isShane: false },
+  //   { name: 'Anima', path: '/avatar/costumes/Anima.glb', isShane: false },
+  //   { name: 'Hairy', path: '/avatar/costumes/hairy.glb', isShane: false },
+  //   { name: 'Luke', path: '/avatar/costumes/Luke.glb', isShane: false },
+  //   { name: 'Messi', path: '/avatar/costumes/Messi.glb', isShane: false },
+  //   { name: 'Player 456', path: '/avatar/costumes/Player 456.glb', isShane: false },
+  //   { name: 'Priest', path: '/avatar/costumes/Priest.glb', isShane: false },
+  //   { name: 'Sir Lancelot', path: '/avatar/costumes/SirLancelot.glb', isShane: false },
+  //   { name: 'Tech Bro', path: '/avatar/costumes/Tech bro.glb', isShane: false },
+  // ];
 
-  const currentCostume = costumes[costumeIndex];
+  // const currentCostume = costumes[costumeIndex];
 
   const shaneAnimFiles = { standing: '/avatar/standing.glb' };
 
-  // Handle costume change
-  const changeCostume = useCallback((direction) => {
-    setCostumeIndex(prev => {
-      let newIndex;
-      if (direction === 'next') {
-        newIndex = (prev + 1) % costumes.length;
-      } else {
-        newIndex = (prev - 1 + costumes.length) % costumes.length;
-      }
-      return newIndex;
-    });
-  }, []);
+  // Costume selector state is commented out with the selector UI below.
+  // const changeCostume = useCallback((direction) => {
+  //   setCostumeIndex(prev => {
+  //     let newIndex;
+  //     if (direction === 'next') {
+  //       newIndex = (prev + 1) % costumes.length;
+  //     } else {
+  //       newIndex = (prev - 1 + costumes.length) % costumes.length;
+  //     }
+  //     return newIndex;
+  //   });
+  // }, []);
 
   useEffect(() => {
     let disposed = false;
@@ -230,9 +235,11 @@ const AvatarAutoplay = ({ compact = false }) => {
         }, undefined, () => resolve());
       });
 
-      // Load appropriate model based on costume
-      const thisCostume = costumes[costumeIndex];
-      const animFilesToLoad = thisCostume.isShane ? shaneAnimFiles : { costume: thisCostume.path };
+      // Load only the original Shane standing animation.
+      const animFilesToLoad = shaneAnimFiles;
+      // Costume loading is commented out for now.
+      // const thisCostume = costumes[costumeIndex];
+      // const animFilesToLoad = thisCostume.isShane ? shaneAnimFiles : { costume: thisCostume.path };
       
       for (const [name, url] of Object.entries(animFilesToLoad)) { 
         if (disposed) return; 
@@ -241,20 +248,26 @@ const AvatarAutoplay = ({ compact = false }) => {
       
       setLoaded(true);
 
-      if (thisCostume.isShane) {
-        const standingAction = actionsRef.current.standing;
-        if (standingAction) {
-          standingAction.play();
-          currentRef.current = 'standing';
-        }
-      } else {
-        // For costumes, just play the first animation loop
-        const firstAnim = Object.keys(actionsRef.current)[0];
-        if (firstAnim && actionsRef.current[firstAnim]) {
-          actionsRef.current[firstAnim].play();
-          currentRef.current = firstAnim;
-        }
+      const standingAction = actionsRef.current.standing;
+      if (standingAction) {
+        standingAction.play();
+        currentRef.current = 'standing';
       }
+      // Costume animation playback is commented out for now.
+      // if (thisCostume.isShane) {
+      //   const standingAction = actionsRef.current.standing;
+      //   if (standingAction) {
+      //     standingAction.play();
+      //     currentRef.current = 'standing';
+      //   }
+      // } else {
+      //   // For costumes, just play the first animation loop
+      //   const firstAnim = Object.keys(actionsRef.current)[0];
+      //   if (firstAnim && actionsRef.current[firstAnim]) {
+      //     actionsRef.current[firstAnim].play();
+      //     currentRef.current = firstAnim;
+      //   }
+      // }
 
       const animate = () => { 
         if (disposed) return; 
@@ -263,11 +276,13 @@ const AvatarAutoplay = ({ compact = false }) => {
           if (isDraggingRef.current) {
             // User is dragging - follow mouse
             currentRotationRef.current = targetRotationRef.current;
-          } else {
-            // Auto rotate until user interacts
-            currentRotationRef.current += 0.0015;
-            targetRotationRef.current = currentRotationRef.current;
           }
+          // Extra auto-rotation is commented out; keep only the original Shane animation.
+          // else {
+          //   // Auto rotate until user interacts
+          //   currentRotationRef.current += 0.0015;
+          //   targetRotationRef.current = currentRotationRef.current;
+          // }
           baseModel.rotation.y = currentRotationRef.current;
         }
         renderer.render(scene, camera); 
@@ -309,7 +324,7 @@ const AvatarAutoplay = ({ compact = false }) => {
       
       mount._cleanup = () => { 
         disposed = true; 
-        if (cycleTimeoutRef.current) clearTimeout(cycleTimeoutRef.current); 
+        // if (cycleTimeoutRef.current) clearTimeout(cycleTimeoutRef.current);
         window.removeEventListener('resize', onResize);
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
@@ -321,7 +336,7 @@ const AvatarAutoplay = ({ compact = false }) => {
 
     loadThree();
     return () => { if (mount._cleanup) mount._cleanup(); };
-  }, [costumeIndex]);
+  }, []);
 
   return (
     <div style={{ width: '100%' }}>
@@ -329,15 +344,16 @@ const AvatarAutoplay = ({ compact = false }) => {
         {!loaded && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: fontMono, fontSize: '0.75rem', color: brand.creme, letterSpacing: '0.1em' }}>Loading...</div>}
       </div>
       
-      {/* Costume Selector */}
+      {/*
+      Costume Selector
       <div style={{ marginTop: compact ? 18 : 24, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 10 : 12 }}>
         <div style={{ fontFamily: fontMono, fontSize: compact ? '0.6rem' : '0.65rem', color: brand.creme, letterSpacing: '0.15em', textTransform: 'uppercase', textAlign: 'center' }}>Choose your founder</div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: compact ? 16 : 24, width: '100%' }}>
-          <button 
+          <button
             onClick={() => changeCostume('prev')}
-            style={{ 
-              width: compact ? 36 : 40, height: compact ? 36 : 40, 
-              border: `1px solid ${brand.softTitan}`, 
+            style={{
+              width: compact ? 36 : 40, height: compact ? 36 : 40,
+              border: `1px solid ${brand.softTitan}`,
               borderRadius: '50%',
               background: 'transparent',
               color: brand.steel,
@@ -353,21 +369,21 @@ const AvatarAutoplay = ({ compact = false }) => {
           >
             ←
           </button>
-          <div style={{ 
-            fontFamily: fontMain, 
-            fontSize: compact ? '1rem' : '1.1rem', 
-            fontWeight: 500, 
+          <div style={{
+            fontFamily: fontMain,
+            fontSize: compact ? '1rem' : '1.1rem',
+            fontWeight: 500,
             color: brand.void,
             minWidth: compact ? 84 : 100,
             textAlign: 'center'
           }}>
             {currentCostume.name}
           </div>
-          <button 
+          <button
             onClick={() => changeCostume('next')}
-            style={{ 
-              width: compact ? 36 : 40, height: compact ? 36 : 40, 
-              border: `1px solid ${brand.softTitan}`, 
+            style={{
+              width: compact ? 36 : 40, height: compact ? 36 : 40,
+              border: `1px solid ${brand.softTitan}`,
               borderRadius: '50%',
               background: 'transparent',
               color: brand.steel,
@@ -385,6 +401,7 @@ const AvatarAutoplay = ({ compact = false }) => {
           </button>
         </div>
       </div>
+      */}
     </div>
   );
 };
@@ -563,16 +580,16 @@ const App = () => {
   }, []);
 
   const services = [
-    ['LLM Systems & Retrieval', 'Production AI systems built on your data. Multi-agent workflows, retrieval pipelines, and tool-using assistants designed around real operational use cases.'],
-    ['Operations Automation', 'Replace disconnected tools with a single system of record for reporting, reconciliation, workflow automation, and AI-assisted operations.'],
-    ['Internal AI Assistants', 'Custom assistants connected to the tools your team already uses — email, calendars, messaging, documents, and internal business systems.'],
-    ['Design Engineering', 'Web applications, landing pages, and brand systems built with the same product and execution discipline as the rest of the stack.'],
+    ['Agent Orchestration & Retrieval', 'Production LLM applications, multi-agent workflows, retrieval systems, and tool-using assistants designed around real operational use cases.'],
+    ['Data Pipelines & Operations', 'Real-time ingestion, processing, enrichment, and reconciliation pipelines that turn disconnected systems into usable operational data.'],
+    ['AI Chatbots & Internal Agents', 'Custom chatbots and operations agents for customer support, guest messaging, internal search, scheduling, escalation, and workflow execution.'],
+    ['Full-Stack Product Systems', 'Secure full-stack applications, internal tools, and product surfaces that turn AI workflows into production software people can actually use.'],
   ];
 
   const stack = [
-    ['AI Systems', 'LangGraph, multi-agent orchestration, MCP, RAG, prompt engineering, tool use, function calling, evaluation loops, durable chat agents, LLM integrations, voice agents'],
-    ['Backend', 'Python, TypeScript, FastAPI, Node.js, Pydantic, REST APIs, WebSockets, PostgreSQL, Supabase, Redis'],
-    ['Frontend & Infra', 'React, Next.js, Tailwind CSS, Docker, CI/CD, Cloudflare, Temporal, Langfuse'],
+    ['AI Systems', 'LangGraph, OpenAI Agent SDK, MCP, RAG tuning, vector retrieval, tool use, multi-agent orchestration, LangSmith, Langfuse, Temporal, Redis'],
+    ['Backend & Data', 'Python, FastAPI, Pydantic, PostgreSQL, SQLite, Supabase, Docker, Uvicorn'],
+    ['Frontend & Infra', 'React, Next.js, Tailwind CSS, TypeScript, Vite, Expo'],
     ['Integrations', 'QuickBooks API, Hostaway API, OCR pipelines, Google Workspace, Telegram, WhatsApp, Discord, Slack'],
   ];
 
@@ -655,7 +672,7 @@ const App = () => {
             <SectionLabel>About</SectionLabel>
             <SectionTitle>Production AI systems, built with business context.</SectionTitle>
             <p style={{ color: brand.steel, fontSize: '0.95rem', lineHeight: 1.8, marginBottom: isMobileLayout ? 36 : 44 }}>
-              I build production AI systems that reduce manual work, lower software spend, and improve operating leverage. With 10 years of experience as a founder and sales leader navigating high-value legal transactions, I bring business judgment alongside hands-on engineering. I build systems that solve real operational problems, not surface-level AI features.
+              I build production LLM applications, agent orchestration systems, retrieval pipelines, and backend data workflows. With 2+ years building applied AI systems and 10 years as a business owner and sales leader managing high-value client pipelines and complex transactions, I bring operational judgment alongside hands-on engineering. I build systems that solve real operational problems, not surface-level AI features.
             </p>
             {workToggleButtons}
             {workItemsPanel}
@@ -670,10 +687,10 @@ const App = () => {
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <SectionLabel>Open To Roles</SectionLabel>
           <h2 style={{ fontFamily: fontMain, fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 300, color: brand.void, letterSpacing: '-0.02em' }}>
-            Exploring AI engineer,<br /> product, and full-stack platform roles.
+            Exploring AI engineer,<br /> full-stack, and Python/data systems roles.
           </h2>
           <p style={{ color: brand.steel, fontSize: '0.92rem', lineHeight: 1.7, maxWidth: 620, margin: '14px auto 0' }}>
-            If you&apos;re building production AI products, internal automation systems, or agent infrastructure, I&apos;m happy to connect and see if there&apos;s a fit.
+            If you&apos;re building production AI products, internal tools, data systems, or agent infrastructure, I&apos;m happy to connect and see if there&apos;s a fit.
           </p>
         </div>
         <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
@@ -698,12 +715,12 @@ const App = () => {
             'Unified agent runtime connecting all integrations into a single orchestration layer',
           ]} />
         <ProjectShowcase title="Quant Pulse" url="quant-pulse.com" tags={['SaaS', 'financial AI', 'multi-agent', 'SEC pipeline', 'Claude API']}
-          description="AI-powered financial intelligence platform that extracts SEC filings, runs analysis workflows, and generates structured investment reports."
+          description="Full-stack financial intelligence platform that extracts SEC filings, runs analysis workflows, and generates structured investment reports."
           features={[
             'Multi-agent system orchestrating SEC filing extraction, analysis, and report generation — 95% reduction in manual analysis time',
             'Recursive retrieval architecture for nested SEC filings and structured downstream analysis',
             'Real-time data pipeline integrating SEC EDGAR, Alpaca, and yfinance APIs with WebSocket streaming at sub-500ms latency',
-            'Hybrid SQLite/PostgreSQL caching with advisory locking and auto-deduplication — 85% fewer API calls, 60% infra cost savings',
+            'React/TypeScript, Next.js, and FastAPI stack with hybrid SQLite/PostgreSQL caching and 85% fewer API calls',
           ]} />
       </Section>
 
@@ -714,11 +731,11 @@ const App = () => {
         <SectionLabel>Selected Work</SectionLabel>
         <SectionTitle>Client Case Studies</SectionTitle>
         <CaseStudy company="AirButler Property Management" industry="Property Management / Hospitality"
-          challenge="Property management company that had outgrown its tooling stack. Five disconnected software subscriptions. Manual bookkeeping eating 20+ hours a month. Owner reporting done via phone calls and email. No centralized data. No automation."
-          solution="Delivered a 3-pillar automation system in 4 weeks. Centralized all business data into a single Supabase database — syncing Hostaway reservations, automated QuickBooks reconciliation, Google Sheets records, receipts via OCR pipeline, and contractor records in real time. Built automated accounting reconciliation engine with nightly API sync, discrepancy detection, auto-resolution of minor variances, and escalation workflows. Engineered customer portal with owner dashboards, booking history, invoice access, and live AI chat agent. Built a custom AI operations agent connected to live business data that surfaced pricing opportunities, identified revenue leakage, and supported operational decision-making."
-          results={['Reduced finance, reconciliation, and owner support workload by 20+ hours per month', 'Saved $25,000/year by replacing 5 software subscriptions with one custom system', 'Owner portal replaced manual email reports and phone calls entirely', 'Custom AI operations agent surfaced pricing opportunities and revenue leakage', 'Nightly reconciliation with discrepancy detection and escalation workflows']}
+          challenge="Property management company with 60+ short-term rental properties, fragmented tooling, manual bookkeeping, guest messaging overhead, and no centralized operations layer for reporting, reconciliation, pricing, or support."
+          solution="Built separate operations and guest relations agents on top of a unified Supabase/PostgreSQL-backed system. Centralized booking, accounting, spreadsheet, receipt, contractor, and support data into one operational database. Implemented automated reconciliation jobs, a custom full-stack operations UI, a 24/7 guest messaging assistant, and a custom AI operations agent connected to live business data for pricing, maintenance coordination, scheduling, and escalation workflows."
+          results={['Reduced finance, reconciliation, and owner support workload by 20+ hours per month', 'Replaced 4 software subscriptions and cut software spend by roughly 40%', '24/7 guest messaging and internal operations workflows running in one system', 'Custom AI operations agent surfaced pricing opportunities and revenue leakage', 'Custom full-stack operations UI replaced fragmented reporting and manual coordination']}
           tech={['Python', 'Supabase', 'QuickBooks API', 'Hostaway API', 'OCR Pipeline', 'Google Sheets', 'AI Chat Agent']} />
-        <CaseStudy company="VoxLine AI" industry="AI Voice Agents / Business Communication"
+        <CaseStudy company="Undisclosed Multi-Agent Sales System" industry="AI Voice Agents / Business Communication"
           challenge="AI voice agent platform with a monolithic sales agent, inconsistent call quality, and no data pipeline for continuous improvement. The product needed AI systems that could support different stages of the sales process and get smarter over time."
           solution="Consulted on and engineered a specialized multi-agent architecture with dual RAG knowledge bases for different stages of the sales pipeline. Architected a self-improving call pipeline — a 3-agent system that analyzes transcripts, scores performance, and generates weekly prompt optimizations with human approval and git-based version control."
           results={['Monolithic sales agent → specialized multi-agent system with dual RAG knowledge bases', 'Consulted on AI system architecture and production implementation', 'Self-improving pipeline: every call makes the system smarter', 'Human-in-the-loop approval via Slack with git versioning and rollback', 'Structured call analysis and prompt optimization loop for continuous improvement']}
@@ -769,7 +786,7 @@ const App = () => {
       <footer style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 48px 64px', borderTop: `1px solid ${brand.softTitan}`, display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
         <div>
           <div style={{ fontFamily: fontMain, fontSize: '1.1rem', fontWeight: 600, color: brand.void, marginBottom: 8 }}>Shane Coy</div>
-          <p style={{ color: brand.steel, fontSize: '0.85rem', lineHeight: 1.6, maxWidth: 360 }}>AI engineer building production LLM systems, automations, and data pipelines that solve real operational problems.</p>
+          <p style={{ color: brand.steel, fontSize: '0.85rem', lineHeight: 1.6, maxWidth: 360 }}>AI engineer building production LLM applications, custom agents, and Python/data systems for real operational problems.</p>
         </div>
         <div>
           <div style={{ fontFamily: fontMono, fontSize: '0.68rem', color: brand.gold, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Links</div>
