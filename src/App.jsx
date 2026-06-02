@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
    Brand: Void Black, Golden Ray, Militar Night,
           Urban Steel, Soft Titanium, Creme White, Obsidian Green
    Purpose: Portfolio landing page with a hero, recruiter-facing content, and
-            a Three.js Shane avatar driven by the standing.glb animation.
+            a Three.js Shane avatar driven by the optimized standing animation.
    Main inputs: Static copy, project data, public avatar GLB assets, viewport size.
    Main outputs: Rendered React/Vite portfolio page.
    Safe config: Brand colors, section copy, project arrays, and avatar asset paths.
@@ -28,6 +28,7 @@ const fontMono = "'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace";
 const fontDisplay = "'Sakire', 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif";
 
 const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+const SHANE_AVATAR_ANIMATION = '/avatar/standing-optimized.glb';
 
 /* ═══════════════════════════════════════════════════
    ASCII HERO CANVAS
@@ -159,7 +160,7 @@ const AvatarAutoplay = ({ compact = false }) => {
 
   // const currentCostume = costumes[costumeIndex];
 
-  const shaneAnimFiles = { standing: '/avatar/standing.glb' };
+  const shaneAnimFiles = { standing: SHANE_AVATAR_ANIMATION };
 
   // Costume selector state is commented out with the selector UI below.
   // const changeCostume = useCallback((direction) => {
@@ -213,9 +214,13 @@ const AvatarAutoplay = ({ compact = false }) => {
       const shadow = new THREE.Mesh(new THREE.CircleGeometry(0.6, 32), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.08 }));
       shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.001; scene.add(shadow);
       clockRef.current = new THREE.Clock();
-      const { GLTFLoader } = await import('three/examples/jsm/loaders/GLTFLoader.js').catch(() => ({ GLTFLoader: null }));
+      const [{ GLTFLoader }, { MeshoptDecoder }] = await Promise.all([
+        import('three/examples/jsm/loaders/GLTFLoader.js'),
+        import('three/examples/jsm/libs/meshopt_decoder.module.js'),
+      ]).catch(() => [{ GLTFLoader: null }, { MeshoptDecoder: null }]);
       if (!GLTFLoader) return;
       const loader = new GLTFLoader(); 
+      if (MeshoptDecoder) loader.setMeshoptDecoder(MeshoptDecoder);
       let baseModel = null;
       
       // Reset actions
@@ -223,18 +228,17 @@ const AvatarAutoplay = ({ compact = false }) => {
 
       const loadAnim = (name, url) => new Promise((resolve) => {
         loader.load(url, (gltf) => {
-          if (!baseModel) { 
-            baseModel = gltf.scene; 
-            baseModel.scale.set(1.0, 1.0, 1.0); 
-            baseModel.position.set(0, 0, 0); 
-            scene.add(baseModel); 
-            mixerRef.current = new THREE.AnimationMixer(baseModel); 
+          if (!baseModel) {
+            baseModel = gltf.scene;
+            baseModel.scale.set(1.0, 1.0, 1.0);
+            baseModel.position.set(0, 0, 0);
+            scene.add(baseModel);
+            mixerRef.current = new THREE.AnimationMixer(baseModel);
           }
           if (gltf.animations?.length > 0) actionsRef.current[name] = mixerRef.current.clipAction(gltf.animations[0]);
-          resolve();
-        }, undefined, () => resolve());
+          resolve(true);
+        }, undefined, () => resolve(false));
       });
-
       // Load only the original Shane standing animation.
       const animFilesToLoad = shaneAnimFiles;
       // Costume loading is commented out for now.
@@ -243,7 +247,7 @@ const AvatarAutoplay = ({ compact = false }) => {
       
       for (const [name, url] of Object.entries(animFilesToLoad)) { 
         if (disposed) return; 
-        await loadAnim(name, url); 
+        await loadAnim(name, url);
       }
       
       setLoaded(true);

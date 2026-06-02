@@ -24,11 +24,11 @@ npm run preview
 
 ## 3D Avatar Assets
 
-The 3D avatar feature requires GLB model files in the `public/avatar/` directory:
+The 3D avatar feature requires the optimized GLB model file in the `public/avatar/` directory:
 
-- `standing.glb` - Idle standing animation for the default avatar
+- `standing-optimized.glb` - Optimized idle standing animation for the default avatar
 
-Place your `.glb` files in `public/avatar/` before building for production.
+Place the `.glb` file in `public/avatar/` before building for production.
 
 ## Deployment
 
